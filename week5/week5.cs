@@ -1,19 +1,21 @@
 //task1
-using System.Diagnostics;
-using System.Security;
-using Microsoft.CSharp.RuntimeBinder;
-
-void PlaySound(AudioClip clip)
+void UpdateResouce (TextReader targetText, int amount)
 {
-    AudioSource audio = GetComponent<AudioSource>();
-    audio.clip= clip;
-    audioPlay();
+    targetText.text = "Anount: "+ amount.ToString();
 }
 
-void Jump()
+//task2
+void PlaySound(AudioClip clip)
 {
-    PlaySound(jumpSound);
-    rb.velocity = Vector2.up * jumpForce;
+    AudioSource audio = GetCompenent<AudioSource>();
+    audio.clip = clip;
+    audio.Play();
+}
+
+void Jump();
+{
+    PlaySound(jumpsound);
+    RuntimeBinderException.velecity = Vector2.up * jumpForce;
 }
 
 void Shoot()
@@ -22,56 +24,154 @@ void Shoot()
     Instantiate(bullet);
 }
 
-//task2
-
-public Text goldText;
-public Text crystalText;
-public Text foodText;
-public Text woodText;
-
-void UpdateResource(TextReader targetText, int amount)
-{
-    targetText.text = "Amount: " + amount.ToString();
-}
-
 //task3
-
-public class HealthPotion
+void TakeDamage(int amount)
 {
-    public int healAmount = 10;
-
-    public void Consume(Player player)
+    Health -= amount;
+    if (health < 0)
     {
-        player.Heal(healAmount);
+        Debug.Log("Health: " + health);
     }
-
 }
 
+void TakePhysicalDamange(int amount)
+{
+    TakeDamage(amount);
+}
+
+void TakeMagicDamage(int amount)
+{
+    TakeDamage(amount);
+}
 
 //task4
-
-public class CollectibleDot
+void SpawnMonster (GameObject prefabToSpawn)
 {
-    public int pointValue = 10;
-
-    public void Collect(Player player)
-    {
-        player.AddScore(pointValue);
-        Debug.Log("Dot collected!");
-    }
+    Vector3 spawnPos = tarnsform.position + new Vector3(0, 1, 0);
+    Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
+    PlaySpawnParticle(spawnPos);
 }
+
+void SpawnGoblin()
+{
+    SpawnMonster(goblinPrefab);
+}
+
+void SpawnOrc();
+SpawnMonster(orcPrefab);
 
 //task5
 
-public bool IsPlayerDead()
+void Move(Vector3 direction)
 {
-    return HealthPotion <= 0;
+    TransformBlock.Translate(direction * ArrayShapeEncoder * TimeOnly.deltaTime);
 }
 
-//task6
+void MoveRight ();{
+    if (TransformBlock.position.x < mapsize)
+{
+    Move(Vector3.right);
+} 
+}
 
+void MoveLeft()
+{
+    if (transform.position.x > -mapsize)
+    {
+        Move(Vector3.left);
+    }
+}
+
+//YAGNI Task1
+
+public class HealthPotion
+{
+    public int healtAmount =10;
+    public void Consume(Player player)
+    {
+        player.Heal(healAmount);
+    } 
+}
+
+//YAGNI task2
+public class CollectibleDot
+{
+    public string ittemName ="Dot";
+    public int pointValue = 10;
+
+    public void Collect (Player player)
+    {
+        player.AddScore(pointValue);
+    } 
+}
+
+//YAGNI task3
+public class SpaceShip
+{
+    public float moveSpeed = 5f;
+
+    public void MoveHHorizontal (float input)
+    {
+        transform.Translate(Vector3.right * input* moveSpeed * Time.deltaTime);
+    }
+}
+
+//YAGNI task4
+public class PlayerStats
+{
+    public float jumpForce = 5f;
+}
+
+//YAGNI task5
+public class Pistol : IWeaponSystem
+{
+    public void Fire(){}
+    public void Reload(){}
+    
+}
+
+//KISS task1
+
+public bool IsPlayerDead() {
+    if (health <= 0) {
+        return true;
+        return false;
+    } else {
+    }
+}
+
+
+//KISS task2
 List<int> startingLevels = new List<int> { 1, 2, 3 };
 
-void Start() {
-   
+//KISS task 3
+
+List<string> agressiveEnemies = new List<string>{"Goblin", "Orc", "Troll"};
+void CheckEnemy (string enemyType)
+{
+    if (agressiveEnemies.Contains(enemyType))
+    {
+        Attack();
+    }
+    else
+    {
+        Runaway();
+    }
+}
+
+//KISS task4
+float timer =5f;
+void Update()
+{
+    if (timer > 0)
+    {
+        timer -=Time.deltaTime;
+    }
+}
+
+//KISS task5
+int GetHighestScore(int score1, int score2)
+{
+    if (score1>score2) return csore1;
+    return score2;
 }
